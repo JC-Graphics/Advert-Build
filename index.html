@@ -3,57 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Junction — Advert Builder v3</title>
+<title>Junction — Advert Builder v3 (Fixed)</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; overflow-x:hidden; }
-
 /* ── HEADER ── */
 .hdr { padding:16px 32px; border-bottom:1px solid #1a1a1a; display:flex; align-items:center; gap:14px; background:#0a0a0a; position:sticky; top:0; z-index:300; }
 .jbadge { background:#FFD400; color:#000; font-family:'Anton',sans-serif; font-size:11px; letter-spacing:3px; padding:5px 12px; border-radius:3px; }
 .hdr-text h1 { font-family:'Anton',sans-serif; font-size:15px; letter-spacing:3px; }
 .hdr-text p { font-size:10px; color:#444; letter-spacing:2px; margin-top:2px; }
 .safe-badge { margin-left:auto; background:#1a2a1a; border:1px solid #2a4a2a; border-radius:20px; padding:5px 14px; font-size:10px; font-weight:700; letter-spacing:2px; color:#4CAF50; }
-
 /* ── LAYOUT ── */
 .wrap { display:grid; grid-template-columns:250px 1fr; min-height:calc(100vh - 65px); }
-
 /* ── SIDEBAR ── */
 .sb { background:#0d0d0d; border-right:1px solid #1a1a1a; padding:18px; position:sticky; top:65px; height:calc(100vh - 65px); overflow-y:auto; }
 .sbl { font-size:9px; font-weight:700; letter-spacing:3px; color:#333; text-transform:uppercase; margin:16px 0 7px; }
 .sbl:first-child { margin-top:0; }
-
 .sbtab { flex:1; background:#141414; border:2px solid #1e1e1e; border-radius:5px; padding:7px 4px; color:#555; font-family:'Montserrat',sans-serif; font-size:9px; font-weight:700; letter-spacing:1px; cursor:pointer; transition:all .15s; text-align:center; }
 .sbtab:hover { color:#aaa; border-color:#333; }
 .sbtab.on { border-color:#FFD400; color:#FFD400; background:#181818; }
-
 .vbtn { width:100%; text-align:left; background:#141414; border:2px solid #1e1e1e; border-radius:5px; padding:8px 12px; color:#555; font-family:'Montserrat',sans-serif; font-size:10px; font-weight:700; letter-spacing:1px; cursor:pointer; margin-bottom:5px; transition:all .15s; }
 .vbtn:hover { border-color:#333; color:#aaa; }
 .vbtn.on { border-color:#FFD400; color:white; background:#181818; }
-
 .egroup { margin-bottom:9px; }
 .elabel { display:block; font-size:8px; font-weight:700; letter-spacing:2px; color:#333; text-transform:uppercase; margin-bottom:4px; }
 .einput { width:100%; background:#141414; border:1px solid #222; border-radius:4px; padding:7px 9px; color:#ccc; font-family:'Montserrat',sans-serif; font-size:10px; line-height:1.4; outline:none; transition:border-color .15s; }
 .einput:focus { border-color:#555; color:white; }
 .etarea { resize:vertical; min-height:52px; }
-
 .acc-row { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:4px; }
 .asw { width:28px; height:28px; border-radius:50%; cursor:pointer; border:2px solid transparent; transition:all .15s; flex-shrink:0; }
 .asw:hover { transform:scale(1.15); }
 .asw.on { border-color:white; }
-
 .dlbtn { width:100%; background:#FFD400; color:#000; border:none; border-radius:5px; padding:11px; font-family:'Anton',sans-serif; font-size:12px; letter-spacing:2px; cursor:pointer; margin-top:14px; transition:opacity .2s; }
 .dlbtn:hover { opacity:.85; }
 .dlbtn.sec { background:#1a1a1a; color:#666; margin-top:6px; border:1px solid #222; font-size:10px; }
 .dlbtn:disabled { opacity:.4; cursor:not-allowed; }
-
 /* slider */
 .slider-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
 .slider-row label { font-size:8px; font-weight:700; letter-spacing:2px; color:#333; text-transform:uppercase; white-space:nowrap; min-width:55px; }
 .slider-row input[type=range] { flex:1; accent-color:#FFD400; }
 .slider-row span { font-size:9px; color:#555; min-width:30px; text-align:right; }
-
 /* image drop */
 .img-drop { width:100%; aspect-ratio:16/10; background:#0f0f0f; border:2px dashed #252525; border-radius:5px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; margin-bottom:10px; }
 .img-drop:hover { border-color:#444; }
@@ -62,7 +52,6 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 .img-drop-text { font-size:9px; font-weight:700; letter-spacing:2px; color:#2a2a2a; text-transform:uppercase; }
 .img-drop-sub { font-size:8px; color:#1e1e1e; margin-top:2px; }
 .img-drop-preview { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.65; pointer-events:none; }
-
 /* layout picker */
 .layout-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:4px; }
 .lpick { background:#141414; border:2px solid #1e1e1e; border-radius:5px; padding:6px 4px; cursor:pointer; transition:all .15s; text-align:center; }
@@ -71,47 +60,37 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 .lpick-thumb { width:100%; aspect-ratio:16/10; border-radius:2px; margin-bottom:4px; position:relative; overflow:hidden; background:#0a0a0a; }
 .lpick-label { font-size:8px; font-weight:700; letter-spacing:1px; color:#444; text-transform:uppercase; }
 .lpick.on .lpick-label { color:#FFD400; }
-
 /* ── MAIN ── */
 .main { padding:28px 32px; overflow-y:auto; background:#0a0a0a; }
 .plabel { font-size:9px; font-weight:700; letter-spacing:4px; color:#2a2a2a; text-transform:uppercase; margin-bottom:12px; }
-
 /* zone toggle btn */
 .zone-btn { background:#1a1a1a; border:1px solid #252525; color:#555; border-radius:4px; padding:6px 14px; font-size:9px; font-weight:700; letter-spacing:2px; cursor:pointer; margin-bottom:14px; transition:all .15s; }
 .zone-btn:hover { color:#aaa; border-color:#333; }
 .zone-btn.on { background:#1a2a1a; border-color:#2a4a2a; color:#4CAF50; }
-
 /* ══════════════════════════════════
    THE SLIDE
 ══════════════════════════════════ */
 .slide-outer { width:100%; max-width:920px; aspect-ratio:16/10; position:relative; overflow:hidden; border-radius:2px; box-shadow:0 0 0 1px #1e1e1e, 0 20px 60px rgba(0,0,0,.8); margin-bottom:16px; background:#080608; }
-
 /* BG layers */
 .sl-photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
 .sl-overlay { position:absolute; inset:0; z-index:2; }
 .sl-content { position:absolute; inset:0; z-index:10; }
 .sl-ghost { position:absolute; z-index:3; font-family:'Anton',sans-serif; text-transform:uppercase; line-height:0.85; pointer-events:none; user-select:none; white-space:nowrap; }
-
 /* zone overlay */
 .zone-overlay { position:absolute; inset:0; z-index:50; pointer-events:none; display:none; }
 .zone-overlay.show { display:block; }
 .z-presenter { position:absolute; left:30%; right:30%; top:30%; bottom:0; border-left:2px dashed rgba(255,60,60,.45); border-right:2px dashed rgba(255,60,60,.45); border-top:2px dashed rgba(255,60,60,.45); background:rgba(255,40,40,.05); }
 .z-presenter-label { position:absolute; top:4px; left:50%; transform:translateX(-50%); font-size:8px; font-weight:700; letter-spacing:2px; color:rgba(255,80,80,.6); text-transform:uppercase; white-space:nowrap; font-family:'Montserrat',sans-serif; }
 .z-safe-label { position:absolute; top:2%; left:50%; transform:translateX(-50%); font-size:8px; font-weight:700; letter-spacing:2px; color:rgba(76,175,80,.7); text-transform:uppercase; white-space:nowrap; font-family:'Montserrat',sans-serif; }
-
 /* ══════════════════════════════════
    SIGN-UP BLOCK (shared styling helpers)
 ══════════════════════════════════ */
-/* "SIGN UP VIA" small label — now much brighter + wider letter-spacing */
 .signup-label { font-family:'Anton',sans-serif; text-transform:uppercase; letter-spacing:3px; color:rgba(255,255,255,.95); }
-/* URL — bright white, accent underline for clarity */
 .signup-url { font-family:'Anton',sans-serif; text-transform:uppercase; color:#ffffff; letter-spacing:1px; border-bottom:2px solid var(--accent); padding-bottom:2px; display:inline-block; }
-
 /* ══════════════════════════════════
    LAYOUT B — LEFT COLUMN
 ══════════════════════════════════ */
 .lb-fade { position:absolute; top:0; left:0; bottom:0; width:58%; background:linear-gradient(to right, rgba(0,0,0,.85) 0%, rgba(0,0,0,.65) 65%, transparent 100%); z-index:1; }
-
 .lb-content { position:absolute; top:0; left:0; bottom:0; width:52%; padding:4% 5%; display:flex; flex-direction:column; justify-content:center; z-index:5; }
 .lb-tag { font-family:'Anton',sans-serif; font-size:clamp(6px,.9vw,10px); letter-spacing:5px; text-transform:uppercase; color:var(--accent); margin-bottom:4%; opacity:.8; }
 .lb-title { font-family:'Anton',sans-serif; text-transform:uppercase; line-height:0.86; margin-bottom:5%; }
@@ -120,31 +99,23 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 .lb-divider { width:40px; height:3px; background:var(--accent); margin-bottom:5%; }
 .lb-date { font-family:'Anton',sans-serif; text-transform:uppercase; color:var(--accent); line-height:1.3; margin-bottom:3%; }
 .lb-detail { font-family:'Anton',sans-serif; text-transform:uppercase; color:rgba(255,255,255,.6); line-height:1.5; }
-
 .lb-ghost { bottom:-10%; right:-3%; color:rgba(255,255,255,.04); }
-
 /* ══════════════════════════════════
    LAYOUT C — FULL WIDTH TOP
 ══════════════════════════════════ */
 .lc-fade { position:absolute; top:0; left:0; right:0; height:55%; background:linear-gradient(to bottom, rgba(0,0,0,.75) 0%, rgba(0,0,0,.4) 70%, transparent 100%); z-index:1; }
-
 .lc-title { position:absolute; top:3%; left:2%; right:2%; font-family:'Anton',sans-serif; text-transform:uppercase; line-height:0.85; z-index:5; white-space:nowrap; }
 .lc-title .solid { color:white; }
 .lc-title .outline { color:transparent; -webkit-text-stroke:clamp(1px,.15vw,2px) white; }
 .lc-title .outline.accent { -webkit-text-stroke:clamp(1px,.15vw,2px) var(--accent); }
-
 .lc-info-row { position:absolute; left:2%; right:3%; display:flex; align-items:flex-start; justify-content:space-between; z-index:5; }
 .lc-date { font-family:'Anton',sans-serif; text-transform:uppercase; color:var(--accent); line-height:1.2; }
 .lc-loc { font-family:'Anton',sans-serif; text-transform:uppercase; color:rgba(255,255,255,.65); line-height:1.4; }
-
 .lc-ghost { bottom:-10%; right:-2%; color:rgba(255,255,255,.04); }
-
 /* ══════════════════════════════════
-   LAYOUT D — RIGHT COLUMN  (NEW — replaces Top Half)
-   Mirror of Layout B — text on the right, presenter framed left
+   LAYOUT D — RIGHT COLUMN
 ══════════════════════════════════ */
 .ld-fade { position:absolute; top:0; right:0; bottom:0; width:58%; background:linear-gradient(to left, rgba(0,0,0,.85) 0%, rgba(0,0,0,.65) 65%, transparent 100%); z-index:1; }
-
 .ld-content { position:absolute; top:0; right:0; bottom:0; width:52%; padding:4% 5%; display:flex; flex-direction:column; justify-content:center; align-items:flex-end; text-align:right; z-index:5; }
 .ld-tag { font-family:'Anton',sans-serif; font-size:clamp(6px,.9vw,10px); letter-spacing:5px; text-transform:uppercase; color:var(--accent); margin-bottom:4%; opacity:.8; }
 .ld-title { font-family:'Anton',sans-serif; text-transform:uppercase; line-height:0.86; margin-bottom:5%; text-align:right; }
@@ -153,17 +124,14 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 .ld-divider { width:40px; height:3px; background:var(--accent); margin-bottom:5%; }
 .ld-date { font-family:'Anton',sans-serif; text-transform:uppercase; color:var(--accent); line-height:1.3; margin-bottom:3%; }
 .ld-detail { font-family:'Anton',sans-serif; text-transform:uppercase; color:rgba(255,255,255,.6); line-height:1.5; }
-
 .ld-ghost { bottom:-10%; left:-3%; color:rgba(255,255,255,.04); }
-
 /* watermark bottom right */
 .wm { position:absolute; bottom:3.5%; right:3.5%; z-index:10; text-align:right; opacity:.4; }
 .wm-line { width:32px; height:2px; background:white; margin-bottom:4px; margin-left:auto; }
 .wm-text { font-family:'Anton',sans-serif; font-size:clamp(5px,.65vw,8px); letter-spacing:3px; text-transform:uppercase; }
-/* watermark bottom LEFT (used for Right Column layout so WM doesn't overlap text) */
+/* watermark bottom LEFT */
 .wm-left { position:absolute; bottom:3.5%; left:3.5%; right:auto; z-index:10; text-align:left; }
 .wm-left .wm-line { margin-left:0; margin-right:auto; }
-
 /* tips */
 .tips { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; max-width:920px; margin-top:4px; }
 .tip { background:#111; border:1px solid #1a1a1a; border-radius:6px; padding:12px; }
@@ -173,18 +141,15 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 </style>
 </head>
 <body>
-
 <div class="hdr">
   <div class="jbadge">JUNCTION</div>
   <div class="hdr-text">
-    <h1>ADVERT BUILDER · V3</h1>
+    <h1>ADVERT BUILDER · V3 (FIXED)</h1>
     <p>DROP YOUR IMAGE · PICK A LAYOUT · DOWNLOAD PNG · PROPRESENTER READY</p>
   </div>
   <div class="safe-badge">✓ PRESENTER SAFE</div>
 </div>
-
 <div class="wrap">
-
 <!-- ════════════ SIDEBAR ════════════ -->
 <div class="sb">
   <div style="display:flex;gap:4px;margin-bottom:14px;">
@@ -192,7 +157,6 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
     <button class="sbtab"    id="sbTabText"  onclick="showSb('text')">✏️ TEXT</button>
     <button class="sbtab"    id="sbTabStyle" onclick="showSb('style')">🎨 STYLE</button>
   </div>
-
   <!-- ── IMAGE PANEL ── -->
   <div id="sbImg">
     <div class="sbl" style="margin-top:0">Your Photo</div>
@@ -224,7 +188,6 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
     <button class="vbtn"    id="bgCool"   onclick="setBG('cool',this)">🌊 Cool Dark</button>
     <button class="vbtn"    id="bgPure"   onclick="setBG('pure',this)">⬛ Pure Black</button>
   </div>
-
   <!-- ── TEXT PANEL ── -->
   <div id="sbText" style="display:none">
     <div class="sbl" style="margin-top:0">Event Name</div>
@@ -268,12 +231,10 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
       <input class="einput" id="t_wm" value="Junction Church" oninput="updateSlide()">
     </div>
   </div>
-
   <!-- ── STYLE PANEL ── -->
   <div id="sbStyle" style="display:none">
     <div class="sbl" style="margin-top:0">Layout</div>
     <div class="layout-grid">
-      <!-- LEFT COLUMN (B) -->
       <div class="lpick on" id="lpB" onclick="setLayout('B',this)">
         <div class="lpick-thumb" style="background:#0a0808;">
           <div style="position:absolute;top:0;left:0;bottom:0;width:55%;background:linear-gradient(to right,rgba(0,0,0,.8),transparent);"></div>
@@ -282,7 +243,6 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
         </div>
         <div class="lpick-label">LEFT COL</div>
       </div>
-      <!-- FULL WIDTH (C) -->
       <div class="lpick" id="lpC" onclick="setLayout('C',this)">
         <div class="lpick-thumb" style="background:#0a0808;">
           <div style="position:absolute;top:0;left:0;right:0;height:55%;background:linear-gradient(to bottom,rgba(0,0,0,.75),transparent);"></div>
@@ -292,7 +252,6 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
         </div>
         <div class="lpick-label">FULL WIDTH</div>
       </div>
-      <!-- RIGHT COLUMN (D — NEW) -->
       <div class="lpick" id="lpD" onclick="setLayout('D',this)">
         <div class="lpick-thumb" style="background:#0a0808;">
           <div style="position:absolute;top:0;right:0;bottom:0;width:55%;background:linear-gradient(to left,rgba(0,0,0,.8),transparent);"></div>
@@ -302,7 +261,6 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
         <div class="lpick-label">RIGHT COL</div>
       </div>
     </div>
-
     <div class="sbl">Accent Colour</div>
     <div class="acc-row">
       <div class="asw on" style="background:#00E5D4" onclick="setAccent('#00E5D4',this)" title="Cyan (Brotherhood)"></div>
@@ -313,12 +271,10 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
       <div class="asw"    style="background:#4CAF50" onclick="setAccent('#4CAF50',this)" title="Green"></div>
       <div class="asw"    style="background:#ffffff" onclick="setAccent('#ffffff',this)" title="White"></div>
     </div>
-
     <div class="sbl">Line 2 Style</div>
     <button class="vbtn on" id="stylOutW" onclick="setOutlineStyle('white',this)">□ Outline — White</button>
     <button class="vbtn"    id="stylOutA" onclick="setOutlineStyle('accent',this)">□ Outline — Accent colour</button>
     <button class="vbtn"    id="stylSolA" onclick="setOutlineStyle('solid',this)">■ Solid — Accent colour</button>
-
     <div class="sbl">Ghost Word</div>
     <div class="slider-row">
       <label>Opacity</label>
@@ -326,29 +282,18 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
       <span id="ghostVal">5%</span>
     </div>
   </div>
-
   <button class="dlbtn" id="dlBtn" onclick="downloadSlide()">⬇ SAVE AS PNG</button>
   <button class="dlbtn sec" onclick="showTip()">📐 1920 × 1200 · 16:10</button>
 </div>
-
 <!-- ════════════ MAIN ════════════ -->
 <div class="main">
   <p class="plabel" id="mainLabel">LAYOUT B · LEFT COLUMN · PRESENTER FRAMES RIGHT</p>
   <button class="zone-btn on" id="zoneBtn" onclick="toggleZone()">◉ SHOW PRESENTER ZONE</button>
-
-  <!-- THE SLIDE -->
   <div class="slide-outer" id="theSlide">
-
-    <!-- BG: photo or generated canvas -->
     <img id="slPhoto" class="sl-photo" style="display:none" alt="">
     <canvas id="slCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;" width="1920" height="1200"></canvas>
-
-    <!-- Overlay tint -->
     <div id="slOverlay" class="sl-overlay" style="background:rgba(0,0,0,0.6);"></div>
-
-    <!-- Ghost word layer -->
     <div class="sl-ghost la-ghost" id="slGhost" style="font-size:clamp(70px,21vw,255px);opacity:.05;bottom:-12%;left:-2%;color:rgba(255,255,255,.05);">BROTHERHOOD</div>
-
     <!-- ── LAYOUT B CONTENT (LEFT COLUMN) ── -->
     <div id="layB" class="sl-content">
       <div class="lb-fade"></div>
@@ -362,27 +307,22 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
         <div class="lb-divider"></div>
         <div class="lb-date" id="lb_date" style="font-size:clamp(7px,1.9vw,23px);">SATURDAY 2ND MAY, 6–9PM</div>
         <div class="lb-detail" id="lb_loc" style="font-size:clamp(5px,1.2vw,15px);margin-top:2%;">JUNCTION CHURCH LOUGHBOROUGH</div>
-        <!-- BIGGER + BRIGHTER sign-up block -->
         <div class="signup-label" id="lb_extra" style="font-size:clamp(7px,1.5vw,18px);margin-top:4%;">SIGN UP VIA</div>
         <div style="margin-top:1%;"><span class="signup-url" id="lb_url" style="font-size:clamp(7px,1.45vw,17px);">WWW.JUNCTIONCHURCH.NET/WHATS-ON</span></div>
       </div>
       <div class="wm"><div class="wm-line"></div><div class="wm-text" id="lb_wm">Junction Church</div></div>
     </div>
-
     <!-- ── LAYOUT C CONTENT (FULL WIDTH) ── -->
     <div id="layC" class="sl-content" style="display:none;">
       <div class="lc-fade"></div>
-      <!-- Full-width title -->
       <div class="lc-title" id="lc_title" style="font-size:clamp(26px,9.2vw,111px);">
         <span class="solid" id="lc_l1">BROTHERHOOD</span><span class="outline" id="lc_l2"> NIGHT</span><span class="outline accent" id="lc_l3"></span>
       </div>
-      <!-- Info row below title -->
       <div class="lc-info-row" id="lc_inforow">
         <div>
           <div class="lc-date" id="lc_date" style="font-size:clamp(7px,1.9vw,23px);">SATURDAY 2ND MAY, 6–9PM</div>
           <div class="lc-loc"  id="lc_loc"  style="font-size:clamp(5px,1.3vw,15px);margin-top:2%;">JUNCTION CHURCH LOUGHBOROUGH</div>
         </div>
-        <!-- BIGGER + BRIGHTER sign-up block on right -->
         <div style="text-align:right;">
           <div class="signup-label" id="lc_extra" style="font-size:clamp(7px,1.4vw,17px);">SIGN UP VIA</div>
           <div style="margin-top:4%;"><span class="signup-url" id="lc_url" style="font-size:clamp(7px,1.35vw,16px);">WWW.JUNCTIONCHURCH.NET/WHATS-ON</span></div>
@@ -390,8 +330,7 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
       </div>
       <div class="wm"><div class="wm-line"></div><div class="wm-text" id="lc_wm">Junction Church</div></div>
     </div>
-
-    <!-- ── LAYOUT D CONTENT (RIGHT COLUMN — NEW) ── -->
+    <!-- ── LAYOUT D CONTENT (RIGHT COLUMN) ── -->
     <div id="layD" class="sl-content" style="display:none;">
       <div class="ld-fade"></div>
       <div class="ld-content">
@@ -404,22 +343,16 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
         <div class="ld-divider"></div>
         <div class="ld-date" id="ld_date" style="font-size:clamp(7px,1.9vw,23px);">SATURDAY 2ND MAY, 6–9PM</div>
         <div class="ld-detail" id="ld_loc" style="font-size:clamp(5px,1.2vw,15px);margin-top:2%;">JUNCTION CHURCH LOUGHBOROUGH</div>
-        <!-- BIGGER + BRIGHTER sign-up block -->
         <div class="signup-label" id="ld_extra" style="font-size:clamp(7px,1.5vw,18px);margin-top:4%;">SIGN UP VIA</div>
         <div style="margin-top:1%;"><span class="signup-url" id="ld_url" style="font-size:clamp(7px,1.45vw,17px);">WWW.JUNCTIONCHURCH.NET/WHATS-ON</span></div>
       </div>
-      <!-- WM moved to bottom LEFT so it doesn't clash with right-side text -->
       <div class="wm wm-left"><div class="wm-line"></div><div class="wm-text" id="ld_wm">Junction Church</div></div>
     </div>
-
-    <!-- Zone overlay -->
     <div class="zone-overlay show" id="zoneOverlay">
       <div class="z-presenter"><div class="z-presenter-label">⚠ PRESENTER ZONE — NO TEXT</div></div>
       <div class="z-safe-label">✓ TEXT ABOVE HERE — ALWAYS VISIBLE</div>
     </div>
   </div>
-
-  <!-- TIPS -->
   <div class="tips">
     <div class="tip">
       <div class="tip-icon">🎯</div>
@@ -429,7 +362,7 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
     <div class="tip">
       <div class="tip-icon">🔗</div>
       <div class="tip-title" style="color:#4CAF50">Sign-up Clarity</div>
-      <div class="tip-body">"SIGN UP VIA" is now bold white at 18px+ with wide tracking. The URL sits below in bright white with an accent-colour underline — impossible to miss.</div>
+      <div class="tip-body">"SIGN UP VIA" is bold white at 18px+ with wide tracking. The URL sits below in bright white with an accent-colour underline — impossible to miss.</div>
     </div>
     <div class="tip">
       <div class="tip-icon">📺</div>
@@ -438,15 +371,13 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
     </div>
   </div>
 </div>
-
 </div><!-- /wrap -->
-
 <script>
 // ══════════════════════
 // STATE
 // ══════════════════════
 const W = 1920, H = 1200;
-let curLayout     = 'B';          // default now Left Column
+let curLayout     = 'B';
 let curAccent     = '#00E5D4';
 let curOutline    = 'white';
 let curDark       = 0.60;
@@ -455,7 +386,6 @@ let curBG         = 'brush';
 let curGhostOp    = 0.05;
 let uploadedImg   = null;
 let zoneVisible   = true;
-
 // ══════════════════════
 // CANVAS BG PAINTERS
 // ══════════════════════
@@ -531,8 +461,6 @@ function drawPure(ctx, w, h) {
   ctx.fillStyle='#080808'; ctx.fillRect(0,0,w,h);
   addGrain(ctx,w,h,0.02,11);
 }
-
-// cover-fit image draw
 function drawImageCover(ctx, img, w, h) {
   const iw = img.naturalWidth || img.width;
   const ih = img.naturalHeight || img.height;
@@ -542,7 +470,6 @@ function drawImageCover(ctx, img, w, h) {
   const dx = (w - dw) / 2, dy = (h - dh) / 2;
   ctx.drawImage(img, dx, dy, dw, dh);
 }
-
 function renderBG() {
   const canvas = document.getElementById('slCanvas');
   const ctx = canvas.getContext('2d');
@@ -555,7 +482,6 @@ function renderBG() {
   ctx.fillStyle = `rgba(${curTint},${curDark})`;
   ctx.fillRect(0,0,W,H);
 }
-
 // ══════════════════════
 // LAYOUT POSITIONING
 // ══════════════════════
@@ -569,7 +495,6 @@ function positionLayoutC() {
   const pct = ((titleBottom / slideH) * 100) + 2;
   infoRow.style.top = pct + '%';
 }
-
 // ══════════════════════
 // TEXT UPDATE
 // ══════════════════════
@@ -583,17 +508,12 @@ function updateSlide() {
   const url = v('t_url');
   const ghost = v('t_ghost').toUpperCase();
   const wm = v('t_wm');
-
   setText('slGhost', ghost);
   ['lb_wm','lc_wm','ld_wm'].forEach(id => setText(id, wm));
-
-  // Layout B
   setText('lb_l1', l1); setText('lb_l2', l2);
   const lb3 = document.getElementById('lb_l3');
   if (lb3) { lb3.textContent = l3; lb3.style.display = l3 ? 'block' : 'none'; }
   setText('lb_date', date); setText('lb_loc', loc); setText('lb_extra', extra); setText('lb_url', url);
-
-  // Layout C
   const lc1 = document.getElementById('lc_l1');
   const lc2 = document.getElementById('lc_l2');
   const lc3 = document.getElementById('lc_l3');
@@ -601,21 +521,16 @@ function updateSlide() {
   if (lc2) lc2.textContent = ' ' + l2;
   if (lc3) lc3.textContent = l3 ? ' ' + l3 : '';
   setText('lc_date', date); setText('lc_loc', loc); setText('lc_extra', extra); setText('lc_url', url);
-
-  // Layout D
   setText('ld_l1', l1); setText('ld_l2', l2);
   const ld3 = document.getElementById('ld_l3');
   if (ld3) { ld3.textContent = l3; ld3.style.display = l3 ? 'block' : 'none'; }
   setText('ld_date', date); setText('ld_loc', loc); setText('ld_extra', extra); setText('ld_url', url);
-
   applyAccent();
   applyOutlineStyle();
   setTimeout(positionLayoutC, 50);
 }
-
 function v(id) { return document.getElementById(id)?.value || ''; }
 function setText(id, txt) { const el = document.getElementById(id); if (el) el.textContent = txt; }
-
 // ══════════════════════
 // ACCENT + OUTLINE
 // ══════════════════════
@@ -626,10 +541,8 @@ function applyAccent() {
   });
   document.querySelectorAll('.lb-divider, .ld-divider').forEach(d => d.style.background = curAccent);
   ['lb_tag','ld_tag'].forEach(id => { const el = document.getElementById(id); if (el) el.style.color = curAccent; });
-  // URL underline = accent
   document.querySelectorAll('.signup-url').forEach(el => el.style.borderBottomColor = curAccent);
 }
-
 function applyOutlineStyle() {
   const ids = ['lb_l2','lc_l2','ld_l2'];
   ids.forEach(id => {
@@ -647,7 +560,6 @@ function applyOutlineStyle() {
     }
   });
 }
-
 // ══════════════════════
 // UI CONTROLS
 // ══════════════════════
@@ -657,7 +569,6 @@ function showSb(tab) {
     document.getElementById('sbTab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('on', t===tab);
   });
 }
-
 function setLayout(lay, el) {
   curLayout = lay;
   ['B','C','D'].forEach(l => {
@@ -673,47 +584,40 @@ function setLayout(lay, el) {
   document.getElementById('mainLabel').textContent = labels[lay];
   if (lay==='C') setTimeout(positionLayoutC,100);
 }
-
 function setAccent(col, el) {
   curAccent = col;
   document.querySelectorAll('#sbStyle .acc-row .asw').forEach(s => s.classList.remove('on'));
   el.classList.add('on');
   applyAccent(); applyOutlineStyle();
 }
-
 function setOutlineStyle(style, btn) {
   curOutline = style;
   btn.parentElement.querySelectorAll('.vbtn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   applyOutlineStyle();
 }
-
 function setDark(val) {
   curDark = val/100;
   document.getElementById('darkVal').textContent = val+'%';
   renderBG();
 }
-
 function setTint(rgb, el) {
   curTint = rgb;
   document.querySelectorAll('#sbImg .acc-row .asw').forEach(s => s.classList.remove('on'));
   el.classList.add('on');
   renderBG();
 }
-
 function setBG(name, btn) {
   curBG = name;
   btn.parentElement.querySelectorAll('.vbtn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   if (!uploadedImg) renderBG();
 }
-
 function setGhostOp(val) {
   curGhostOp = val/100;
   document.getElementById('ghostVal').textContent = val+'%';
   document.getElementById('slGhost').style.opacity = curGhostOp;
 }
-
 function toggleZone() {
   zoneVisible = !zoneVisible;
   document.getElementById('zoneOverlay').classList.toggle('show', zoneVisible);
@@ -721,7 +625,6 @@ function toggleZone() {
   btn.classList.toggle('on', zoneVisible);
   btn.textContent = zoneVisible ? '◉ SHOW PRESENTER ZONE' : '○ SHOW PRESENTER ZONE';
 }
-
 // ══════════════════════
 // IMAGE UPLOAD
 // ══════════════════════
@@ -743,7 +646,6 @@ function handleFile(input) {
   };
   reader.readAsDataURL(file);
 }
-
 window.addEventListener('DOMContentLoaded', () => {
   const drop = document.getElementById('imgDrop');
   drop.addEventListener('dragover', e => { e.preventDefault(); drop.style.borderColor='#FFD400'; });
@@ -769,7 +671,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
 // ══════════════════════
 // DOWNLOAD
 // ══════════════════════
@@ -777,15 +678,12 @@ function downloadSlide() {
   const btn = document.getElementById('dlBtn');
   btn.textContent = '⏳ RENDERING...';
   btn.disabled = true;
-
   const zone = document.getElementById('zoneOverlay');
   zone.style.display = 'none';
-
   setTimeout(() => {
     const off = document.createElement('canvas');
     off.width = W; off.height = H;
     const ctx = off.getContext('2d');
-
     if (uploadedImg) {
       drawImageCover(ctx, uploadedImg, W, H);
     } else {
@@ -793,25 +691,20 @@ function downloadSlide() {
     }
     ctx.fillStyle = `rgba(${curTint},${curDark})`;
     ctx.fillRect(0,0,W,H);
-
     drawContent(ctx);
-
     const link = document.createElement('a');
     link.download = `junction_advert_layout${curLayout}.png`;
     link.href = off.toDataURL('image/png');
     link.click();
-
     if (zoneVisible) zone.style.display = 'block';
     btn.textContent = '⬇ SAVE AS PNG';
     btn.disabled = false;
   }, 100);
 }
-
 function hexToRgb(hex) {
   const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
   return {r,g,b};
 }
-
 function drawContent(ctx) {
   const ac = curAccent;
   const l1 = v('t_line1').toUpperCase();
@@ -823,10 +716,8 @@ function drawContent(ctx) {
   const url = v('t_url');
   const ghost = v('t_ghost').toUpperCase();
   const wm = v('t_wm');
-
   ctx.save();
-
-  // GHOST WORD — lower zone (for B & D place opposite side to text)
+  // GHOST WORD
   ctx.font = `${Math.round(H*.42)}px Anton,sans-serif`;
   ctx.fillStyle = 'white';
   ctx.globalAlpha = curGhostOp;
@@ -841,110 +732,95 @@ function drawContent(ctx) {
   ctx.globalAlpha = 1;
   ctx.textAlign = 'left';
 
-  // helper to draw the bright sign-up block
+  // ══════════════════════
+  // FIXED SIGN-UP BLOCK
+  // With textBaseline='top', text drawn at (x,y) extends DOWN to y + sizeUrl.
+  // Underline must sit BELOW the text, so underY = y2 + sizeUrl + small padding.
+  // ══════════════════════
   function drawSignupBlock(x, y, align, sizeLabel, sizeUrl) {
+    ctx.textBaseline = 'top';
     ctx.textAlign = align;
-    // "SIGN UP VIA" — bright white
+    // "SIGN UP VIA"
     ctx.font = `${sizeLabel}px Anton,sans-serif`;
     ctx.fillStyle = 'rgba(255,255,255,.95)';
-    // simulate letter-spacing ~3px by adding spaces? canvas has no letter-spacing, use strokeText? we'll just draw — Anton already has good tracking
     ctx.fillText(extra, x, y);
-    let y2 = y + sizeLabel * 1.25;
-    // URL — bright white, with an accent underline drawn below
+    // URL line sits below the label
+    const y2 = y + sizeLabel * 1.35;
     ctx.font = `${sizeUrl}px Anton,sans-serif`;
     ctx.fillStyle = '#ffffff';
     const m = ctx.measureText(url);
     const urlX = align === 'right' ? x - m.width : x;
     ctx.fillText(url, x, y2);
-    // underline
-    const underY = y2 + sizeUrl * 0.18;
+    // Underline — BELOW the URL glyphs (not through them).
+    // Anton glyphs at font-size N occupy ~N pixels from top baseline down.
+    // Add small padding (12% of size) so underline clears descenders.
+    const underThickness = Math.max(2, Math.round(sizeUrl * 0.08));
+    const underY = y2 + sizeUrl * 1.02 + 2;   // <-- FIX: was y2 + sizeUrl*0.18
     ctx.fillStyle = ac;
-    ctx.fillRect(urlX, underY, m.width, Math.max(2, Math.round(sizeUrl*0.08)));
+    ctx.fillRect(urlX, underY, m.width, underThickness);
   }
 
   if (curLayout === 'B') {
     const gf = ctx.createLinearGradient(0,0,W*.58,0);
     gf.addColorStop(0,'rgba(0,0,0,.85)'); gf.addColorStop(.65,'rgba(0,0,0,.6)'); gf.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=gf; ctx.fillRect(0,0,W*.58,H);
-
     const leftX = W*.05;
     ctx.textBaseline = 'top';
     const titleSize = Math.round(H*.152);
-
     ctx.font = `${Math.round(H*.018)}px Anton,sans-serif`;
     ctx.fillStyle = ac; ctx.textAlign='left';
     ctx.fillText('JUNCTION CHURCH · EVENT', leftX, H*.04);
-
     let ty = H*.1;
     ctx.font = `${titleSize}px Anton,sans-serif`;
     ctx.fillStyle='white'; ctx.fillText(l1, leftX, ty); ty += titleSize*.86;
     if (l2) { drawOutlineText(ctx,l2,leftX,ty,titleSize,ac); ty+=titleSize*.86; }
     if (l3) { drawOutlineText(ctx,l3,leftX,ty,titleSize,ac); ty+=titleSize*.86; }
-
     ctx.fillStyle=ac; ctx.fillRect(leftX, ty+H*.02, W*.04, 3); ty+=H*.07;
-
     ctx.font=`${Math.round(H*.036)}px Anton,sans-serif`;
     ctx.fillStyle=ac; ctx.fillText(date,leftX,ty); ty+=H*.048;
-
     ctx.font=`${Math.round(H*.024)}px Anton,sans-serif`;
-    ctx.fillStyle='rgba(255,255,255,.6)'; ctx.fillText(loc,leftX,ty); ty+=H*.044;
-
-    // BRIGHT signup block
+    ctx.fillStyle='rgba(255,255,255,.6)'; ctx.fillText(loc,leftX,ty); ty+=H*.055;
     drawSignupBlock(leftX, ty, 'left', Math.round(H*.028), Math.round(H*.026));
-
   } else if (curLayout === 'C') {
     const gf = ctx.createLinearGradient(0,0,0,H*.55);
     gf.addColorStop(0,'rgba(0,0,0,.75)'); gf.addColorStop(.7,'rgba(0,0,0,.4)'); gf.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=gf; ctx.fillRect(0,0,W,H*.55);
-
     const leftX = W*.02;
     ctx.textBaseline = 'top';
     const titleSize = Math.round(H*.185);
     ctx.font = `${titleSize}px Anton,sans-serif`;
-
     const w1 = ctx.measureText(l1).width;
     const ty = H*.028;
-
     ctx.fillStyle='white'; ctx.textAlign='left';
     ctx.fillText(l1, leftX, ty);
-
     if (l2) {
       const gap = titleSize * 0.06;
       drawOutlineText(ctx, ' '+l2, leftX+w1+gap, ty, titleSize, ac);
     }
-
     let infoY = ty + titleSize * 0.88 + H*.018;
     ctx.font=`${Math.round(H*.038)}px Anton,sans-serif`;
     ctx.fillStyle=ac; ctx.textAlign='left';
     ctx.fillText(date, leftX, infoY); infoY+=H*.052;
-
     ctx.font=`${Math.round(H*.025)}px Anton,sans-serif`;
     ctx.fillStyle='rgba(255,255,255,.65)'; ctx.fillText(loc,leftX,infoY);
-
-    // BRIGHT sign-up on RIGHT
     const rightX = W*.98;
     const rightY = ty + titleSize * 0.88 + H*.018;
     drawSignupBlock(rightX, rightY, 'right', Math.round(H*.026), Math.round(H*.024));
-
-  } else { // D — RIGHT COLUMN
+  } else {
     const gf = ctx.createLinearGradient(W,0,W*.42,0);
     gf.addColorStop(0,'rgba(0,0,0,.85)'); gf.addColorStop(.65,'rgba(0,0,0,.6)'); gf.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=gf; ctx.fillRect(W*.42,0,W*.58,H);
-
     const rightX = W*.95;
     ctx.textBaseline = 'top';
     const titleSize = Math.round(H*.152);
-
     ctx.font = `${Math.round(H*.018)}px Anton,sans-serif`;
     ctx.fillStyle = ac; ctx.textAlign='right';
     ctx.fillText('JUNCTION CHURCH · EVENT', rightX, H*.04);
-
     let ty = H*.1;
     ctx.font = `${titleSize}px Anton,sans-serif`;
     ctx.fillStyle='white';
-    // right-align title lines
     ctx.fillText(l1, rightX - ctx.measureText(l1).width, ty);
-    ctx.textAlign = 'left'; // drawOutlineText uses left-baseline; compute x for right-align
+    ctx.textAlign = 'left';
     ty += titleSize*.86;
     if (l2) {
       ctx.font = `${titleSize}px Anton,sans-serif`;
@@ -958,22 +834,15 @@ function drawContent(ctx) {
       drawOutlineText(ctx, l3, rightX - w3, ty, titleSize, ac);
       ty+=titleSize*.86;
     }
-
-    // divider (right-aligned)
     ctx.fillStyle=ac; ctx.fillRect(rightX - W*.04, ty+H*.02, W*.04, 3); ty+=H*.07;
-
     ctx.textAlign = 'right';
     ctx.font=`${Math.round(H*.036)}px Anton,sans-serif`;
     ctx.fillStyle=ac; ctx.fillText(date,rightX,ty); ty+=H*.048;
-
     ctx.font=`${Math.round(H*.024)}px Anton,sans-serif`;
-    ctx.fillStyle='rgba(255,255,255,.6)'; ctx.fillText(loc,rightX,ty); ty+=H*.044;
-
-    // BRIGHT signup block
+    ctx.fillStyle='rgba(255,255,255,.6)'; ctx.fillText(loc,rightX,ty); ty+=H*.055;
     drawSignupBlock(rightX, ty, 'right', Math.round(H*.028), Math.round(H*.026));
   }
-
-  // Watermark — bottom right (or bottom LEFT for layout D so it doesn't clash with right text)
+  // Watermark
   ctx.textBaseline='alphabetic';
   ctx.fillStyle='rgba(255,255,255,.3)';
   if (curLayout === 'D') {
@@ -987,10 +856,8 @@ function drawContent(ctx) {
     ctx.font=`${Math.round(H*.016)}px Anton,sans-serif`;
     ctx.fillText(wm, W*.965, H*.925);
   }
-
   ctx.restore();
 }
-
 function drawOutlineText(ctx, text, x, y, size, accentCol) {
   ctx.save();
   ctx.font = `${size}px Anton,sans-serif`;
@@ -1007,14 +874,12 @@ function drawOutlineText(ctx, text, x, y, size, accentCol) {
   }
   ctx.restore();
 }
-
 function showTip() {
   const btn = document.querySelector('.dlbtn.sec');
   const orig = btn.textContent;
   btn.textContent = '✓ 1920×1200 · ProPresenter ready!';
   setTimeout(()=>btn.textContent=orig,2500);
 }
-
 // ══════════════════════
 // INIT
 // ══════════════════════
