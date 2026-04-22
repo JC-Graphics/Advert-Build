@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Junction — Advert Builder v3 (Fixed)</title>
+<title>Junction — Advert Builder v4 (Centred + QR)</title>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; overflow-x:hidden; }
@@ -104,7 +105,9 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
    LAYOUT C — FULL WIDTH TOP
 ══════════════════════════════════ */
 .lc-fade { position:absolute; top:0; left:0; right:0; height:55%; background:linear-gradient(to bottom, rgba(0,0,0,.75) 0%, rgba(0,0,0,.4) 70%, transparent 100%); z-index:1; }
-.lc-title { position:absolute; top:3%; left:2%; right:2%; font-family:'Anton',sans-serif; text-transform:uppercase; line-height:0.85; z-index:5; white-space:nowrap; }
+/* v4: title is autosized via JS — no clamp here, just safe defaults so first paint isn't huge */
+/* v4.1: centre-aligned across the slide */
+.lc-title { position:absolute; top:3%; left:2%; right:2%; font-family:'Anton',sans-serif; text-transform:uppercase; line-height:0.85; z-index:5; white-space:nowrap; font-size:60px; text-align:center; }
 .lc-title .solid { color:white; }
 .lc-title .outline { color:transparent; -webkit-text-stroke:clamp(1px,.15vw,2px) white; }
 .lc-title .outline.accent { -webkit-text-stroke:clamp(1px,.15vw,2px) var(--accent); }
@@ -112,6 +115,16 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 .lc-date { font-family:'Anton',sans-serif; text-transform:uppercase; color:var(--accent); line-height:1.2; }
 .lc-loc { font-family:'Anton',sans-serif; text-transform:uppercase; color:rgba(255,255,255,.65); line-height:1.4; }
 .lc-ghost { bottom:-10%; right:-2%; color:rgba(255,255,255,.04); }
+/* v4: QR code card — sits in the side, under the text */
+/* v4.1: positioned higher (just under the info row) so it's easy to scan from a seat */
+.lc-qr { position:absolute; z-index:6; display:none; flex-direction:column; align-items:center;
+         background:#ffffff; padding:1.1% 1.1% .9%; border-radius:6px;
+         box-shadow:0 6px 20px rgba(0,0,0,.45); }
+.lc-qr.on { display:flex; }
+.lc-qr-right { right:3%; top:42%; }
+.lc-qr-left  { left:3%;  top:42%; }
+.lc-qr img { width:clamp(70px,11vw,150px); height:clamp(70px,11vw,150px); display:block; image-rendering:pixelated; }
+.lc-qr-label { font-family:'Anton',sans-serif; font-size:clamp(7px,1vw,12px); color:#0a0a0a; letter-spacing:3px; margin-top:6%; text-align:center; line-height:1; }
 /* ══════════════════════════════════
    LAYOUT D — RIGHT COLUMN
 ══════════════════════════════════ */
@@ -144,7 +157,7 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 <div class="hdr">
   <div class="jbadge">JUNCTION</div>
   <div class="hdr-text">
-    <h1>ADVERT BUILDER · V3 (FIXED)</h1>
+    <h1>ADVERT BUILDER · V4 (CENTRED + QR)</h1>
     <p>DROP YOUR IMAGE · PICK A LAYOUT · DOWNLOAD PNG · PROPRESENTER READY</p>
   </div>
   <div class="safe-badge">✓ PRESENTER SAFE</div>
@@ -224,6 +237,24 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
     <div class="egroup">
       <label class="elabel">Ghost word (lower zone)</label>
       <input class="einput" id="t_ghost" value="BROTHERHOOD" oninput="updateSlide()">
+    </div>
+    <div class="sbl">QR Code (Centred layout · optional)</div>
+    <div class="egroup">
+      <label class="elabel">Link / text encoded in QR</label>
+      <input class="einput" id="t_qr" value="" placeholder="e.g. https://junctionchurch.net/whats-on" oninput="updateSlide()">
+    </div>
+    <div class="egroup">
+      <label class="elabel">QR caption (small text under code)</label>
+      <input class="einput" id="t_qrlabel" value="SCAN" oninput="updateSlide()">
+    </div>
+    <div class="egroup">
+      <label class="elabel">Position</label>
+      <div style="display:flex;gap:6px;margin-top:4px;">
+        <button class="vbtn on" id="qrSideOff"   style="flex:1;margin:0;padding:7px 4px;text-align:center" onclick="setQrSide('off',this)">OFF</button>
+        <button class="vbtn"    id="qrSideLeft"  style="flex:1;margin:0;padding:7px 4px;text-align:center" onclick="setQrSide('left',this)">LEFT</button>
+        <button class="vbtn"    id="qrSideRight" style="flex:1;margin:0;padding:7px 4px;text-align:center" onclick="setQrSide('right',this)">RIGHT</button>
+      </div>
+      <p style="font-size:9px;color:#444;line-height:1.5;margin-top:6px;">QR sits in the lower side of the Centred layout, under the text. Auto-hides when blank.</p>
     </div>
     <div class="sbl">Watermark</div>
     <div class="egroup">
@@ -312,10 +343,10 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
       </div>
       <div class="wm"><div class="wm-line"></div><div class="wm-text" id="lb_wm">Junction Church</div></div>
     </div>
-    <!-- ── LAYOUT C CONTENT (FULL WIDTH) ── -->
+    <!-- ── LAYOUT C CONTENT (CENTRED · FULL WIDTH) — v4 ── -->
     <div id="layC" class="sl-content" style="display:none;">
       <div class="lc-fade"></div>
-      <div class="lc-title" id="lc_title" style="font-size:clamp(26px,9.2vw,111px);">
+      <div class="lc-title" id="lc_title">
         <span class="solid" id="lc_l1">BROTHERHOOD</span><span class="outline" id="lc_l2"> NIGHT</span><span class="outline accent" id="lc_l3"></span>
       </div>
       <div class="lc-info-row" id="lc_inforow">
@@ -327,6 +358,11 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
           <div class="signup-label" id="lc_extra" style="font-size:clamp(7px,1.4vw,17px);">SIGN UP VIA</div>
           <div style="margin-top:4%;"><span class="signup-url" id="lc_url" style="font-size:clamp(7px,1.35vw,16px);">WWW.JUNCTIONCHURCH.NET/WHATS-ON</span></div>
         </div>
+      </div>
+      <!-- v4: optional QR code (toggled via STYLE panel) -->
+      <div class="lc-qr lc-qr-right" id="lc_qrwrap">
+        <img id="lc_qrimg" alt="QR">
+        <div class="lc-qr-label" id="lc_qrlabel">SCAN</div>
       </div>
       <div class="wm"><div class="wm-line"></div><div class="wm-text" id="lc_wm">Junction Church</div></div>
     </div>
@@ -377,7 +413,7 @@ body { background:#0a0a0a; color:white; font-family:'Montserrat',sans-serif; ove
 // STATE
 // ══════════════════════
 const W = 1920, H = 1200;
-let curLayout     = 'B';
+let curLayout     = 'C';            // v4: default to CENTRED
 let curAccent     = '#00E5D4';
 let curOutline    = 'white';
 let curDark       = 0.60;
@@ -386,6 +422,9 @@ let curBG         = 'brush';
 let curGhostOp    = 0.05;
 let uploadedImg   = null;
 let zoneVisible   = true;
+let curQrSide     = 'off';          // v4: 'off' | 'left' | 'right'
+let qrImage       = null;           // pre-rendered Image for canvas export
+let qrLastText    = '';             // remember last text → only regen on change
 // ══════════════════════
 // CANVAS BG PAINTERS
 // ══════════════════════
@@ -485,11 +524,51 @@ function renderBG() {
 // ══════════════════════
 // LAYOUT POSITIONING
 // ══════════════════════
+// v4: autosize the Centred title so any wording — short ("BAPTISM") or long
+// ("SISTERHOOD SIP & PAINT") — fills the available width without overflowing.
+// Algorithm: measure full text via canvas at a known reference size, scale by
+// ratio, clamp. We use canvas measureText (not scrollWidth) because the title
+// element is position:absolute with left/right constraints, so its scrollWidth
+// is clamped to the box width when text is shorter than the box.
+function autosizeLayoutC() {
+  const slide   = document.getElementById('theSlide');
+  const titleEl = document.getElementById('lc_title');
+  if (!slide || !titleEl) return;
+  const slideW = slide.offsetWidth;
+  if (!slideW) return;
+
+  // Build the full visible text exactly as the DOM has it (includes leading
+  // spaces on l2/l3 from updateSlide()).
+  const t1 = (document.getElementById('lc_l1')?.textContent) || '';
+  const t2 = (document.getElementById('lc_l2')?.textContent) || '';
+  const t3 = (document.getElementById('lc_l3')?.textContent) || '';
+  const fullText = t1 + t2 + t3;
+  if (!fullText.trim()) return;
+
+  // Measure via canvas.
+  const c = autosizeLayoutC._canvas || (autosizeLayoutC._canvas = document.createElement('canvas'));
+  const mctx = c.getContext('2d');
+  const probe = 100;
+  mctx.font = `${probe}px Anton, sans-serif`;
+  const measured = mctx.measureText(fullText).width || 1;
+
+  // Target width = 96% of the slide (matches the left:2% / right:2% padding).
+  const targetW = slideW * 0.96;
+
+  let scaled = probe * (targetW / measured);
+  // Clamp so very short titles don't dominate, and very long titles stay readable.
+  const maxPx = slideW * 0.13;   // ≈ 250px on a 1920-wide export
+  const minPx = slideW * 0.035;  // ≈  67px on a 1920-wide export
+  scaled = Math.max(minPx, Math.min(maxPx, scaled));
+  titleEl.style.fontSize = scaled.toFixed(2) + 'px';
+}
+
 function positionLayoutC() {
   const slide = document.getElementById('theSlide');
   const titleEl = document.getElementById('lc_title');
   const infoRow = document.getElementById('lc_inforow');
   if (!titleEl || !infoRow) return;
+  autosizeLayoutC();                 // <-- v4: size before measuring
   const slideH = slide.offsetHeight;
   const titleBottom = titleEl.offsetTop + titleEl.offsetHeight;
   const pct = ((titleBottom / slideH) * 100) + 2;
@@ -527,6 +606,7 @@ function updateSlide() {
   setText('ld_date', date); setText('ld_loc', loc); setText('ld_extra', extra); setText('ld_url', url);
   applyAccent();
   applyOutlineStyle();
+  refreshQrPreview();      // v4: keep QR card in sync with text + position
   setTimeout(positionLayoutC, 50);
 }
 function v(id) { return document.getElementById(id)?.value || ''; }
@@ -578,11 +658,75 @@ function setLayout(lay, el) {
   });
   const labels = {
     B:'LAYOUT B · LEFT COLUMN · PRESENTER FRAMES RIGHT',
-    C:'LAYOUT C · FULL WIDTH · TEXT TOP 40%',
+    C:'LAYOUT C · CENTRED · FULL WIDTH · TEXT TOP 40%',
     D:'LAYOUT D · RIGHT COLUMN · PRESENTER FRAMES LEFT'
   };
   document.getElementById('mainLabel').textContent = labels[lay];
   if (lay==='C') setTimeout(positionLayoutC,100);
+}
+
+// ══════════════════════
+// v4: QR CODE
+// ══════════════════════
+function setQrSide(side, btn) {
+  curQrSide = side;
+  ['qrSideOff','qrSideLeft','qrSideRight'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) b.classList.remove('on');
+  });
+  if (btn) btn.classList.add('on');
+  refreshQrPreview();
+}
+
+function makeQRDataUrl(text, cellSize) {
+  if (!text || typeof qrcode === 'undefined') return null;
+  try {
+    // typeNumber 0 = auto-detect smallest version that fits; 'M' error-correction
+    // is fine for printed/scanned material.
+    const qr = qrcode(0, 'M');
+    qr.addData(String(text));
+    qr.make();
+    return qr.createDataURL(cellSize || 8, 0);
+  } catch (e) {
+    console.warn('QR generation failed:', e);
+    return null;
+  }
+}
+
+// Re-render QR <img> in preview, and pre-load qrImage for canvas export.
+function refreshQrPreview() {
+  const wrap = document.getElementById('lc_qrwrap');
+  const img  = document.getElementById('lc_qrimg');
+  const lbl  = document.getElementById('lc_qrlabel');
+  if (!wrap || !img) return;
+  const text = v('t_qr').trim();
+  const labelText = v('t_qrlabel') || 'SCAN';
+  // Off, blank, or QR lib not loaded yet → hide.
+  if (!text || curQrSide === 'off') {
+    wrap.classList.remove('on');
+    qrImage = null; qrLastText = '';
+    return;
+  }
+  // Side classes
+  wrap.classList.remove('lc-qr-left','lc-qr-right');
+  wrap.classList.add(curQrSide === 'left' ? 'lc-qr-left' : 'lc-qr-right');
+  wrap.classList.add('on');
+  if (lbl) lbl.textContent = labelText;
+  // Only regenerate the data URL when text changed (cheap, but worth it).
+  if (text !== qrLastText) {
+    const dataUrl = makeQRDataUrl(text, 8);
+    if (dataUrl) {
+      img.src = dataUrl;
+      qrLastText = text;
+      // Pre-load a higher-resolution version for the PNG export
+      const exportUrl = makeQRDataUrl(text, 14);
+      if (exportUrl) {
+        const im = new Image();
+        im.onload = () => { qrImage = im; };
+        im.src = exportUrl;
+      }
+    }
+  }
 }
 function setAccent(col, el) {
   curAccent = col;
@@ -680,7 +824,22 @@ function downloadSlide() {
   btn.disabled = true;
   const zone = document.getElementById('zoneOverlay');
   zone.style.display = 'none';
-  setTimeout(() => {
+
+  // v4: Make sure the QR image is ready (it's loaded async after URL changes).
+  const qrText = v('t_qr').trim();
+  const needsQr = qrText && curQrSide !== 'off' && curLayout === 'C';
+  const ensureQr = (cb) => {
+    if (!needsQr) { cb(); return; }
+    if (qrImage && qrLastText === qrText) { cb(); return; }
+    const dataUrl = makeQRDataUrl(qrText, 14);
+    if (!dataUrl) { cb(); return; }
+    const im = new Image();
+    im.onload  = () => { qrImage = im; qrLastText = qrText; cb(); };
+    im.onerror = () => { cb(); };
+    im.src = dataUrl;
+  };
+
+  ensureQr(() => setTimeout(() => {
     const off = document.createElement('canvas');
     off.width = W; off.height = H;
     const ctx = off.getContext('2d');
@@ -699,7 +858,7 @@ function downloadSlide() {
     if (zoneVisible) zone.style.display = 'block';
     btn.textContent = '⬇ SAVE AS PNG';
     btn.disabled = false;
-  }, 100);
+  }, 100));
 }
 function hexToRgb(hex) {
   const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
@@ -782,21 +941,57 @@ function drawContent(ctx) {
     ctx.fillStyle='rgba(255,255,255,.6)'; ctx.fillText(loc,leftX,ty); ty+=H*.055;
     drawSignupBlock(leftX, ty, 'left', Math.round(H*.028), Math.round(H*.026));
   } else if (curLayout === 'C') {
+    // ── CENTRED layout (v4): title autosized to fill 96% of slide width ──
     const gf = ctx.createLinearGradient(0,0,0,H*.55);
     gf.addColorStop(0,'rgba(0,0,0,.75)'); gf.addColorStop(.7,'rgba(0,0,0,.4)'); gf.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=gf; ctx.fillRect(0,0,W,H*.55);
     const leftX = W*.02;
     ctx.textBaseline = 'top';
-    const titleSize = Math.round(H*.185);
+
+    // Compose the full title with single-space gaps between segments — matches
+    // the DOM preview (lc_l2/lc_l3 each have a single leading space) so the
+    // exported PNG visually matches what you see on screen.
+    const piece1 = l1;
+    const piece2 = l2 ? ' ' + l2 : '';
+    const piece3 = l3 ? ' ' + l3 : '';
+    const fullStr = piece1 + piece2 + piece3;
+
+    // Probe at a known size, then scale by ratio to fit 96% of W.
+    // Floor and ceiling stop comically tiny / huge type.
+    const probe = Math.round(H*.18);
+    ctx.font = `${probe}px Anton,sans-serif`;
+    const measured = ctx.measureText(fullStr).width || 1;
+    const targetW = W * 0.96;
+    let titleSize = Math.round(probe * (targetW / measured));
+    const maxPx = Math.round(H * 0.235);   // ≈ 282px on 1200H — generous ceiling
+    const minPx = Math.round(H * 0.06);    // ≈  72px on 1200H — readable floor
+    titleSize = Math.max(minPx, Math.min(maxPx, titleSize));
     ctx.font = `${titleSize}px Anton,sans-serif`;
-    const w1 = ctx.measureText(l1).width;
-    const ty = H*.028;
-    ctx.fillStyle='white'; ctx.textAlign='left';
-    ctx.fillText(l1, leftX, ty);
-    if (l2) {
-      const gap = titleSize * 0.06;
-      drawOutlineText(ctx, ' '+l2, leftX+w1+gap, ty, titleSize, ac);
+    // Safety margin: nudge down 2px at a time if metric variance overflows.
+    while (ctx.measureText(fullStr).width > targetW && titleSize > minPx) {
+      titleSize -= 2;
+      ctx.font = `${titleSize}px Anton,sans-serif`;
     }
+
+    // v4.1: draw the title centred across the slide.
+    ctx.font = `${titleSize}px Anton,sans-serif`;
+    const w1 = ctx.measureText(piece1).width;
+    const w2 = piece2 ? ctx.measureText(piece2).width : 0;
+    const w3 = piece3 ? ctx.measureText(piece3).width : 0;
+    const totalW = w1 + w2 + w3;
+    const ty = H*.028;
+    let cursorX = (W - totalW) / 2;        // centre the row
+    ctx.fillStyle = 'white'; ctx.textAlign = 'left';
+    ctx.fillText(piece1, cursorX, ty);
+    cursorX += w1;
+    if (piece2) {
+      drawOutlineText(ctx, piece2, cursorX, ty, titleSize, ac);
+      cursorX += w2;
+    }
+    if (piece3) {
+      drawOutlineText(ctx, piece3, cursorX, ty, titleSize, ac);
+    }
+
     let infoY = ty + titleSize * 0.88 + H*.018;
     ctx.font=`${Math.round(H*.038)}px Anton,sans-serif`;
     ctx.fillStyle=ac; ctx.textAlign='left';
@@ -806,6 +1001,34 @@ function drawContent(ctx) {
     const rightX = W*.98;
     const rightY = ty + titleSize * 0.88 + H*.018;
     drawSignupBlock(rightX, rightY, 'right', Math.round(H*.026), Math.round(H*.024));
+
+    // ── v4.1: QR card on the side, just under the info row (mirrors CSS top:42%) ──
+    if (qrImage && curQrSide !== 'off') {
+      const qrPx     = Math.round(H * 0.20);              // QR module area
+      const padPx    = Math.round(H * 0.018);             // white card padding
+      const labelTxt = (v('t_qrlabel') || 'SCAN').toUpperCase();
+      const labelSz  = Math.round(H * 0.024);
+      const cardW    = qrPx + padPx * 2;
+      const cardH    = qrPx + padPx * 2 + labelSz + Math.round(H*0.012);
+      const x = curQrSide === 'left'
+                ? Math.round(W * 0.03)
+                : Math.round(W - cardW - W * 0.03);
+      const y = Math.round(H * 0.42);                     // higher up, just under info row
+      // Card background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(x, y, cardW, cardH);
+      // QR
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(qrImage, x + padPx, y + padPx, qrPx, qrPx);
+      ctx.imageSmoothingEnabled = true;
+      // Label
+      ctx.fillStyle = '#0a0a0a';
+      ctx.font = `${labelSz}px Anton,sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText(labelTxt, x + cardW/2, y + padPx + qrPx + Math.round(H*0.006));
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    }
   } else {
     const gf = ctx.createLinearGradient(W,0,W*.42,0);
     gf.addColorStop(0,'rgba(0,0,0,.85)'); gf.addColorStop(.65,'rgba(0,0,0,.6)'); gf.addColorStop(1,'rgba(0,0,0,0)');
@@ -884,12 +1107,26 @@ function showTip() {
 // INIT
 // ══════════════════════
 window.onload = () => {
+  // v4: default to CENTRED layout — show layC, hide the rest
+  ['B','C','D'].forEach(l => {
+    const el = document.getElementById('lay'+l);
+    if (el) el.style.display = (l === curLayout) ? 'block' : 'none';
+    const pick = document.getElementById('lp'+l);
+    if (pick) pick.classList.toggle('on', l === curLayout);
+  });
+  const lbl = document.getElementById('mainLabel');
+  if (lbl) lbl.textContent = 'LAYOUT C · CENTRED · FULL WIDTH · TEXT TOP 40%';
+
   renderBG();
   updateSlide();
   applyAccent();
   applyOutlineStyle();
   positionLayoutC();
   window.addEventListener('resize', positionLayoutC);
+  // Re-autosize once Anton has actually loaded (fallback fonts give wrong widths).
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => positionLayoutC());
+  }
 };
 </script>
 </body>
